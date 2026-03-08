@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Training Dashboard | Scale Army</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #a855f7;
+            --accent: #ff007f;
+            --bg: #030712;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text: #f9fafb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            min-height: 100vh;
+            background-image:
+                radial-gradient(circle at 20% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(168, 85, 247, 0.15) 0%, transparent 40%);
+        }
+
+        .dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 5rem;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            letter-spacing: -2px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 2rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(99, 102, 241, 0.5);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .part-number {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .card-description {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
+            border-radius: 99px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .folder-icon {
+            margin-bottom: 1.5rem;
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        /* Category colors */
+        .cat-knowledge {
+            color: #60a5fa;
+            border-color: rgba(96, 165, 250, 0.2);
+        }
+
+        .cat-web {
+            color: #f472b6;
+            border-color: rgba(244, 114, 182, 0.2);
+        }
+
+        .cat-db {
+            color: #34d399;
+            border-color: rgba(52, 211, 153, 0.2);
+        }
+
+        .cat-ai {
+            color: #a78bfa;
+            border-color: rgba(167, 139, 250, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard">
+        <header>
+            <h1>Mira SA Training</h1>
+            <p class="subtitle">Your central hub for mastering AI-assisted development. Explore each part to track your
+                progress from installation to autonomous agents.</p>
+        </header>
+
+        <div class="grid" id="dashboard-grid">
+            <!-- Part 1 -->
+            <a href="Part_01_Claude_Installation/README.md" class="card">
+                <div class="folder-icon">💻</div>
+                <div class="part-number">Part 01</div>
+                <h2 class="card-title">Claude Desktop</h2>
+                <p class="card-description">Installation and the conceptual difference between desktop and web apps.</p>
+                <div><span class="tag">Knowledge</span></div>
+            </a>
+
+            <!-- Part 2 -->
+            <a href="Part_02_Automation_Ideas/README.md" class="card">
+                <div class="folder-icon">💡</div>
+                <div class="part-number">Part 02</div>
+                <h2 class="card-title">Automation Lab</h2>
+                <p class="card-description">Brainstorming automation ideas linked to your specific OKRs and job role.
+                </p>
+                <div><span class="tag">Planning</span></div>
+            </a>
+
+            <!-- Part 3 -->
+            <a href="Part_03_Concepts_Lookup/README.md" class="card">
+                <div class="folder-icon">📖</div>
+                <div class="part-number">Part 03</div>
+                <h2 class="card-title">Dev Concepts</h2>
+                <p class="card-description">Mapping the landscape: Front-end, Back-end, Python vs. HTML.</p>
+                <div><span class="tag">Knowledge</span></div>
+            </a>
+
+            <!-- Part 4 -->
+            <a href="Part_04_GitHub_Research/README.md" class="card">
+                <div class="folder-icon">🐙</div>
+                <div class="part-number">Part 04</div>
+                <h2 class="card-title">GitHub Foundations</h2>
+                <p class="card-description">Mastering version control, branches, and the critical .gitignore file.</p>
+                <div><span class="tag">Knowledge</span></div>
+            </a>
+
+            <!-- Part 5 -->
+            <a href="Part_05_Hosting_Lookup/README.md" class="card">
+                <div class="folder-icon">☁️</div>
+                <div class="part-number">Part 05</div>
+                <h2 class="card-title">Hosting & Cloud</h2>
+                <p class="card-description">Vercel vs. AWS: Understanding where your code lives on the web.</p>
+                <div><span class="tag">Knowledge</span></div>
+            </a>
+
+            <!-- Part 6 -->
+            <a href="Part_06_Basic_Web_Page/index.html" class="card">
+                <div class="folder-icon">🌐</div>
+                <div class="part-number">Part 06</div>
+                <h2 class="card-title">First Deployment</h2>
+                <p class="card-description">Your first "Hello World" live on Vercel. Understanding permissions.</p>
+                <div><span class="tag">Web</span></div>
+            </a>
+
+            <!-- Part 7 -->
+            <a href="Part_07_Terminal_Basics/README.md" class="card">
+                <div class="folder-icon">⌨️</div>
+                <div class="part-number">Part 07</div>
+                <h2 class="card-title">Terminal Mastery</h2>
+                <p class="card-description">Navigating your computer like a pro using command line interfaces.</p>
+                <div><span class="tag">Knowledge</span></div>
+            </a>
+
+            <!-- Part 8 -->
+            <a href="Part_08_Interactive_Button/index.html" class="card">
+                <div class="folder-icon">🖱️</div>
+                <div class="part-number">Part 08</div>
+                <h2 class="card-title">Interactivity</h2>
+                <p class="card-description">Adding dynamic buttons and learning how AI interacts with terminals.</p>
+                <div><span class="tag">Web</span></div>
+            </a>
+
+            <!-- Part 9 -->
+            <a href="Part_09_VSCode_Setup/README.md" class="card">
+                <div class="folder-icon">📝</div>
+                <div class="part-number">Part 09</div>
+                <h2 class="card-title">VS Code Setup</h2>
+                <p class="card-description">Switching to a professional IDE and managing token context limits.</p>
+                <div><span class="tag">Knowledge</span></div>
+            </a>
+
+            <!-- Part 10 -->
+            <a href="Part_10_Themed_Branding/index.html" class="card">
+                <div class="folder-icon">🎨</div>
+                <div class="part-number">Part 10</div>
+                <h2 class="card-title">Themed Design</h2>
+                <p class="card-description">First steps into themed branding using children's toy aesthetics.</p>
+                <div><span class="tag">Web</span></div>
+            </a>
+
+            <!-- Part 11 -->
+            <a href="Part_11_Modern_Redesign/index.html" class="card">
+                <div class="folder-icon">✨</div>
+                <div class="part-number">Part 11</div>
+                <h2 class="card-title">Modern Hip Branding</h2>
+                <p class="card-description">Creating brand guidelines for "Hip Teens" with modern design systems.</p>
+                <div><span class="tag">Web</span></div>
+            </a>
+
+            <!-- Part 12 -->
+            <a href="Part_12_API_MCP_Research/README.md" class="card">
+                <div class="folder-icon">🔌</div>
+                <div class="part-number">Part 12</div>
+                <h2 class="card-title">APIs & MCPs</h2>
+                <h2 class="card-title"></h2>
+                <p class="card-description">Connecting systems: GET/POST vs. the new Model Context Protocol.</p>
+                <div><span class="tag">Knowledge</span></div>
+            </a>
+
+            <!-- Part 13 -->
+            <a href="Part_13_Subagents_Research/README.md" class="card">
+                <div class="folder-icon">🤖</div>
+                <div class="part-number">Part 13</div>
+                <h2 class="card-title">Subagents</h2>
+                <p class="card-description">Understanding the power of delegated task execution in AI.</p>
+                <div><span class="tag">AI</span></div>
+            </a>
+
+            <!-- Part 14 -->
+            <a href="Part_14_GitHub_Workflow/README.md" class="card">
+                <div class="folder-icon">🚀</div>
+                <div class="part-number">Part 14</div>
+                <h2 class="card-title">Pro Workflow</h2>
+                <p class="card-description">Finalizing Git hooks and real-world deployment strategies.</p>
+                <div><span class="tag">Knowledge</span></div>
+            </a>
+
+            <!-- Part 15 -->
+            <a href="Part_15_Dessert_SQLite/README.md" class="card">
+                <div class="folder-icon">🍰</div>
+                <div class="part-number">Part 15</div>
+                <h2 class="card-title">SQLite Database</h2>
+                <p class="card-description">Building a favorite dessert app with local persistent storage.</p>
+                <div><span class="tag">Database</span></div>
+            </a>
+
+            <!-- Part 16 -->
+            <a href="Part_16_Supabase_Integration/README.md" class="card">
+                <div class="folder-icon">⚡</div>
+                <div class="part-number">Part 16</div>
+                <h2 class="card-title">Cloud DB</h2>
+                <p class="card-description">Migrating variables to Supabase and securing env credentials.</p>
+                <div><span class="tag">Database</span></div>
+            </a>
+
+            <!-- Part 17 -->
+            <a href="Part_17_Product_Roadmap/roadmap.md" class="card">
+                <div class="folder-icon">🗺️</div>
+                <div class="part-number">Part 17</div>
+                <h2 class="card-title">Product Roadmap</h2>
+                <p class="card-description">Designing a multi-agent system for autonomous landing page generation.</p>
+                <div><span class="tag">AI</span></div>
+            </a>
+        </div>
+    </div>
+</body>
+
+</html>
